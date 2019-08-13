@@ -21,9 +21,9 @@ public class LRANGECommand implements Command {
         String key = new String((byte[]) args.get(0));
         int start = Integer.parseInt(new String((byte[]) args.get(1)));
         int end = Integer.parseInt(new String((byte[]) args.get(2)));
-
+        //此时没有做范围判断
         List<String> list = DataBase.getInstance().getList(key);
-        List<String> result = list.subList(start, end - 1);
+        List<String> result = list.subList(start, end - 1);//此时为左闭右开
         Protocol.writeArray(os, result);
     }
 }

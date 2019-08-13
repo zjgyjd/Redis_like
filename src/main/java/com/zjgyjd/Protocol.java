@@ -10,12 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Protocol {
-    public static void writeInteger(OutputStream os , Long v) throws IOException {
-        os.write(':');
-        os.write(String.valueOf(v).getBytes());
-        os.write("/r/n".getBytes());
 
-    }
 
     public static Command readCommand(InputStream is) throws Exception {
         Object o = read(is);
@@ -139,7 +134,36 @@ public class Protocol {
         os.write("\r\n".getBytes());
     }
 
-    public static void writeArray(OutputStream os, List<String> result) {
+    public static void writeArray(OutputStream os, List<String> result) throws IOException {
+        os.write('*');
+        os.write(String.valueOf(result.size()).getBytes());
+        os.write("\r\n".getBytes());
+        for (Object o : result) {
+            if (o instanceof String) {
+                writeBulkString(os, (String)o);
+            } else if (o instanceof Integer) {
+                writeInteger(os, (Integer)o);
+            } else if (o instanceof Long) {
+                writeInteger(os, (Long)o);
+            } else {
+                writeError(os,"类型错误");
+            }
+        }
+    }
+    public static void writeBulkString(OutputStream os, String s) throws IOException {
+        byte[] buf = s.getBytes();
+        os.write('$');
+        os.write(String.valueOf(buf.length).getBytes());
+        os.write("\r\n".getBytes());
+        os.write(buf);
+        os.write("\r\n".getBytes());
+    }
 
+    public static void writeNull(OutputStream os) throws IOException {
+        os.write('$');
+        os.write('-');
+        os.write('1');
+        os.write('\r');
+        os.write('\n');
     }
 }

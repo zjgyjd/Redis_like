@@ -17,7 +17,7 @@ public class HSETCommand implements Command {
 
     @Override
     public void setArgs(List<Object> args) {
-        args = this.args;
+        this.args = args;
     }
 
     @Override
@@ -26,14 +26,16 @@ public class HSETCommand implements Command {
             Protocol.writeError(os, "命令只能有三个参数");
             return;
         }
+        System.out.println("进来了");
         String key = new String((byte[]) args.get(0));
         String field = new String((byte[]) args.get(1));
         String value = new String((byte[]) args.get(2));
         logger.debug("运行的是 HSET 命令:{} {} {}", key, field, value);
-        Map<String, String> map = DataBase.getInstance().getHashMap(key); // set
+        DataBase db = DataBase.getInstance(); // set
+        Map<String , String> map = db.getHashMap(key);
         map.put(key, value);
-        logger.debug("插入后数据共有 {} 个", map.size());
+        logger.debug("插入后数据共有 {} 个", db.getHashes().size());
 
-        Protocol.writeInteger(os, map.size());
+        Protocol.writeInteger(os, db.getHashes().size());
     }
 }

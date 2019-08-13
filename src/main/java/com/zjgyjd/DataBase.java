@@ -32,6 +32,10 @@ public class DataBase {
     //zset类型
     private Map<String, LinkedHashSet<String>> zsets;
 
+    public Map<String, Map<String, String>> getHashes() {
+        return hashes;
+    }
+
     public List<String> getList(String key) {
         return lists.computeIfAbsent(key, k -> new ArrayList<>());
     }
