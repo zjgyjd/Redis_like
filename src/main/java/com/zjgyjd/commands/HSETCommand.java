@@ -26,16 +26,15 @@ public class HSETCommand implements Command {
             Protocol.writeError(os, "命令只能有三个参数");
             return;
         }
-        System.out.println("进来了");
         String key = new String((byte[]) args.get(0));
         String field = new String((byte[]) args.get(1));
         String value = new String((byte[]) args.get(2));
         logger.debug("运行的是 HSET 命令:{} {} {}", key, field, value);
         DataBase db = DataBase.getInstance(); // set
         Map<String , String> map = db.getHashMap(key);
-        map.put(key, value);
-        logger.debug("插入后数据共有 {} 个", db.getHashes().size());
-
-        Protocol.writeInteger(os, db.getHashes().size());
+        map.put(field, value);
+        logger.debug("插入后数据共有 {} 个HashMap, 在{}下有{}个元素", db.getHashes().size() , key ,map.size());
+        String response = "has "+ db.getHashes().size() +" HashMap" + " in "+key+" has "+map.size()+" elements";
+        Protocol.writeBulkString(os, response);
     }
 }

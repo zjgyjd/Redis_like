@@ -28,17 +28,24 @@ public class Server {
                                 if (command != null) {
                                     command.run(os);
                                 } else {
-                                    logger.info("{}已关闭,请重新连接", serverSocket.getInetAddress().getHostAddress());
+                                    logger.info("{}已关闭,请重新连接1", serverSocket.getInetAddress().getHostAddress());
                                     is.close();
                                     os.close();
                                     break;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                logger.info("{}已关闭,请重新连接2", serverSocket.getInetAddress().getHostAddress());
+                                is.close();
+                                os.close();
                                 break;
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
+                            logger.info("{}已关闭,请重新连接3", serverSocket.getInetAddress().getHostAddress());
+                            is.close();
+                            os.close();
                             break;
                         }
 
@@ -47,6 +54,8 @@ public class Server {
 
             }
 
+        }finally {
+            System.out.println("肯定执行!!!");
         }
     }
 

@@ -1,8 +1,9 @@
 package com.zjgyjd;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DataBase {
+public class DataBase implements Serializable {
     private DataBase() {
         stringMap = new HashMap<>();
         hashes = new HashMap<>();
@@ -40,7 +41,7 @@ public class DataBase {
         return lists.computeIfAbsent(key, k -> new ArrayList<>());
     }
 
-    public Map<String , String> getHashMap(String key){
-        return hashes.computeIfAbsent(key , k -> new HashMap<>());
+    public Map<String, String> getHashMap(String key) {
+        return hashes.computeIfAbsent(key, k -> new HashMap<>());
     }
 }
